@@ -1,4 +1,4 @@
-# AOSP
+# AOSP Starter VM
 Goal is to build Android Open Source in a VirtualBox VM.
 
 Why use a VM? 
