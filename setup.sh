@@ -12,4 +12,4 @@ chmod a+x ~/bin/repo
 mkdir aosp
 cd aosp
 
-repo init -u https://android.googlesource.com/platform/manifest
+#repo init -u https://android.googlesource.com/platform/manifest
