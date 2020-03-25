@@ -19,3 +19,23 @@ Available AOSP builds
 AOSP 6.0
 AOSP 7.1
 
+## Unlocking
+Unlocking the bootloader is necessary to install custom operating systems. 
+It's pretty easy. Just note that it wipes out any user data on the device.
+
+- download the android platform tools
+- unzip and extract to a suitable directory
+- open a command prompt in the directory
+- add to the path, e.g. ``export PATH=`pwd`:$PATH``
+- ensure the device has USB debugging enabled
+- use adb to boot into the the bootloader ``adb boot bootloader``
+- use fastboot to unlock the bootloader ``fastboot oem unlock``
+- on the device, confirm the unlock
+- start the device
+
+> You may want to enable developer options and USB debugging, since these
+> settings were also erased.
+
+
+
+

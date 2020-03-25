@@ -1,9 +1,16 @@
 # AOSP Starter VM
 Goal is to build Android Open Source in a VirtualBox VM.
 
+## VM
+
 Why use a VM? 
 - to avoid bogging down the host OS with all the AOSP tools
 - to be able to reproduce an exact build environment
+
+### ubuntu/trusty64
+The nice thing about this is that it's got one root partition which uses all the available RAM.
+
+The downside is it's got no swap, so an OOM Java Heap was encountered even with 8192 MB VM.
 
 https://source.android.com/setup/start
 
@@ -40,7 +47,7 @@ Sync the repo:
 
 ``repo sync -c --no-tags --no-clone-bundle -j2``
 
-This takes about an hour
+This takes about an hour the first time.
 
 > Warning: Python 2 is no longer supported: please upgrade to Python 3.6+
 
@@ -98,9 +105,33 @@ Upped to 4096
 ### ninja: build stopped: subcommand failed
 Try ``export LC_ALL=C``
 
+Didn't work.
+
+### java.lang.OutOfMemoryError: Java heap space
+In ``//frameworks/base:api-stubs-docs metalava``
+
+Increase memory from 4096 to 8192. Not successful.
+
+Add 16 GB swap. Not successful, but the problem may be the JVM configuration.
+
+[Troubleshooting the Jack server](http://www.2net.co.uk/blog/jack-server.html). Might have a good hint about 
+configuring Java heap space, but the Jack server wasn't used in this build.
+
+``./prebuilts/jdk/jdk8/linux-x86/bin/java -version`` OK 1.8 openJDK
+
+``java -XshowSettings 2>&1  | grep Heap`` estimated 1.73G
+
+But there is no ``~/.jack-seetings`` nor any jack on the filesystem.
+I'mm seeing the heap space error in ``com.intellij.psi``
+
+[Jack server is no longer used](https://stackoverflow.com/questions/60468693/java-outofmemoryerror-when-building-aosp-10)
+
+Try ``export _JAVA_OPTIONS="-Xmx4g"``
+
 ## Links and references
 
 [An OVA for building AOSP ROMs](https://nathanpfry.com/builduntu-virtual-machine-android-rom-compiling/)
 
+[Add swap space on Ubuntu](https://wohldani.com/how-to-add-swap-on-ubuntu-14-04/)
 
 

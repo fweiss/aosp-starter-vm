@@ -1,6 +1,14 @@
 ## File space
 Ubuntu box only 64MB on /
 reso sync failed out of space
+
+Fix: modified Vagrantfile and use box that has large root filesystem
+
+## Unspecified soong failures
+Likely OOM
+
+Fix: increas VM memory to 8192 GB
+
 ## Commands
 
 lsblk
