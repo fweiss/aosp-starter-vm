@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.disksize.size = '400GB'
 
   config.vm.provider "virtualbox" do |v|
-  	v.memory = 8192
+  	v.memory = 16384
   	v.cpus = 4
   end
 

@@ -119,7 +119,7 @@ configuring Java heap space, but the Jack server wasn't used in this build.
 
 ``./prebuilts/jdk/jdk8/linux-x86/bin/java -version`` OK 1.8 openJDK
 
-``java -XshowSettings 2>&1  | grep Heap`` estimated 1.73G
+``./prebuilts/jdk/jdk8/linux-x86/bin/java -XshowSettings 2>&1  | grep Heap`` estimated 1.73G
 
 But there is no ``~/.jack-seetings`` nor any jack on the filesystem.
 I'mm seeing the heap space error in ``com.intellij.psi``
@@ -128,10 +128,60 @@ I'mm seeing the heap space error in ``com.intellij.psi``
 
 Try ``export _JAVA_OPTIONS="-Xmx4g"``
 
+> This does affect -XshowSettings: 3.5G
+
+The build step that seems to be failing is in ``.frameworks/base/StubLibraries.bp``.
+
+Try blanking out that file. Nix
+
+Try removing StubLibraries.bp from Android.bp. Nix, breaks dependencies.
+
+Display the make verbose log file with ``gzip -cd out/verbose.log.gz | less -R``
+
+These were all with ``aosp_arm-eng``
+
+Let's lunch something else, ``qemu_trusty_arm64-userdebug``
+
 ## Links and references
 
 [An OVA for building AOSP ROMs](https://nathanpfry.com/builduntu-virtual-machine-android-rom-compiling/)
 
 [Add swap space on Ubuntu](https://wohldani.com/how-to-add-swap-on-ubuntu-14-04/)
+
+## Host memeory upgrdae 32 GB
+Try ``build/soong/soong_ui.bash --make-mode --skip-make``
+
+OOM
+
+try ``export _JAVA_OPTIONS="-Xmx4g"`` and then ``8g``
+
+Nope, still OOM
+
+VM shows 8192 MB, 4 CPU
+
+Lets' increase to 16,384
+
+## Fresh start
+With trusty64, 400 GB, 16384 MB, 4 cpus
+``vagrant up``
+16/21 (some were up to date)
+``vagrant ssh``
+``source /vagrant/setup.sh``
+``git config --global user.email <email>``
+``git config --global user.name <name>``
+``repo init --depth 1 -u https://android.googlesource.com/platform/manifest``
+repo init --depth 1 -u https://android.googlesource.com/platform/manifest
+``repo sync -c --no-tags --no-clone-bundle -j2``
+``source build/envsetup.sh``
+``lunch aosp_flo-userdebug``
+Can not locate config makefile for product "aosp_flo"
+menu choose pixel3-mainline-userdebug
+``make -j2``
+you are building with 15,xxx MB ram, need 16 or more
+
+20200707T2140
+``#### build completed successfully (09:20:53 (hh:mm:ss)) ####``
+
+
 
 
