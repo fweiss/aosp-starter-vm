@@ -11,6 +11,8 @@
 - Kernel version: 3.1.10-gf5d7b7b8b
 - android-build@vpbs1,mtv.corp.google.com
 - Thu Jan 8 04:50:16 YTC 2015
+- build number LMY47V
+- Device "grouper" - Firmware "nakasi" - 2012 N7 WiFi-only
 
 Build number
 LMY47V
@@ -35,6 +37,12 @@ It's pretty easy. Just note that it wipes out any user data on the device.
 
 > You may want to enable developer options and USB debugging, since these
 > settings were also erased.
+
+## Notes
+Device "flo" - Firmware "razor" - 2013 N7 WiFi-only
+Device "deb" - Firmware "razorg" - 2013 N7 LTE
+Device "grouper" - Firmware "nakasi" - 2012 N7 WiFi-only
+Device "tilapia" - Firmware "nakasig" - 2012 N7 3G
 
 
 
