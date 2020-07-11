@@ -32,41 +32,6 @@ Chef provisioning: 16/21 (some were up to date)
 
 ``git config --global user.name <name>``
 
-> !!!skip to Next try for Nexus 7!!!
-
-``repo init --depth 1 -u https://android.googlesource.com/platform/manifest -b 'android-5.1.1_r38'``
-
-> Here's where to choose a particular branch, such as ``android-6.0.1_r55``
-
-``repo sync -c --no-tags --no-clone-bundle -j2``
-
-> Or maybe just repo sync -c
-
-``source build/envsetup.sh``
-
-``lunch aosp_flo-userdebug``
-
-Can not locate config makefile for product "aosp_flo"
-
-``lunch``
-
-Menu choose pixel3-mainline-userdebug
-
-``make -j2``
-
-you are building with 15,xxx MB ram, need 16 or more
-
-``#### build completed successfully (09:20:53 (hh:mm:ss)) ####``
-
-Host system memory usage about 30,962 MB, but not sure:
-- how much was other host system processes
-- if it was in use - it was still shown after make exited
-
-```
-ls -l out/target/product/generic/system.img
--rw-rw-r-- 1 vagrant vagrant 1000849408 Jul  8 04:37 out/target/product/generic/system.img
-```
-
 ## Next try for Nexus 7
 Specificaly, for Nexus 7 2012 Wifi (grouper) 5.1.1
 
@@ -98,8 +63,6 @@ curl https://dl.google.com/dl/android/aosp/nvidia-grouper-lmy47v-c9005750.tgz | 
 curl https://dl.google.com/dl/android/aosp/nxp-grouper-lmy47v-18820f9b.tgz | tar -xvzf - ; bash ./extract-nxp-grouper.sh
 curl https://dl.google.com/dl/android/aosp/widevine-grouper-lmy47v-e570494f.tgz | tar -xvzf - ; bash ./extract-widevine-grouper.sh
 ```
-
-> OK on second try...May need to start a new terminal session first. The following scans for the vendor device drivers
 
 ``. build/envsetup.sh``
 
