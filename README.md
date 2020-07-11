@@ -7,12 +7,14 @@ Why use a VM?
 - to avoid bogging down the host OS with all the AOSP tools
 - to be able to reproduce an exact build environment
 
-### ubuntu/trusty64
+### ubuntu/trusty64 (14.04)
 The nice thing about this is that it's got one root partition which uses all the available storage.
 
 The downside is it's got no swap, so an OOM Java Heap was encountered even with 8192 MB VM.
 
 > But does it matter when there's 16+ GB of RAM?
+
+> Only python 3.4.3 is available on 14.04
 
 ## Fresh start
 
@@ -30,11 +32,15 @@ Chef provisioning: 16/21 (some were up to date)
 
 ``git config --global user.name <name>``
 
-``repo init --depth 1 -u https://android.googlesource.com/platform/manifest``
+> !!!skip to Next try for Nexus 7!!!
+
+``repo init --depth 1 -u https://android.googlesource.com/platform/manifest -b 'android-5.1.1_r38'``
 
 > Here's where to choose a particular branch, such as ``android-6.0.1_r55``
 
 ``repo sync -c --no-tags --no-clone-bundle -j2``
+
+> Or maybe just repo sync -c
 
 ``source build/envsetup.sh``
 
@@ -93,6 +99,38 @@ curl https://dl.google.com/dl/android/aosp/nxp-grouper-lmy47v-18820f9b.tgz | tar
 curl https://dl.google.com/dl/android/aosp/widevine-grouper-lmy47v-e570494f.tgz | tar -xvzf - ; bash ./extract-widevine-grouper.sh
 ```
 
+> OK on second try...May need to start a new terminal session first. The following scans for the vendor device drivers
+
+``. build/envsetup.sh``
+
+``lunch aosp_grouper-userdebug``
+
+``make -j2``
+
+Success, ca 24,700 MB host memory (Chrome and IntelliJ were closed).
+
+```sbtshell
+Installed file list: out/target/product/grouper/installed-files.txt
+Target system fs image: out/target/product/grouper/obj/PACKAGING/systemimage_intermediates/system.img
+Running:  mkuserimg.sh -s out/target/product/grouper/system out/target/product/grouper/obj/PACKAGING/systemimage_intermediates/system.img ext4 system 681574400 -j 0 out/target/product/grouper/root/file_contexts
+make_ext4fs -s -T -1 -S out/target/product/grouper/root/file_contexts -l 681574400 -J -a system out/target/product/grouper/obj/PACKAGING/systemimage_intermediates/system.img out/target/product/grouper/system
+Creating filesystem with parameters:
+    Size: 681574400
+    Block size: 4096
+    Blocks per group: 32768
+    Inodes per group: 6944
+    Inode size: 256
+    Journal blocks: 0
+    Label:
+    Blocks: 166400
+    Block groups: 6
+    Reserved block group size: 47
+Created filesystem with 1357/41664 inodes and 72678/166400 blocks
+Install system fs image: out/target/product/grouper/system.img
+out/target/product/grouper/system.img+out/target/product/grouper/obj/PACKAGING/recovery_patch_intermediates/recovery_from_boot.p maxsize=695844864 blocksize=4224 total=288627210 reserve=7028736
+
+#### make completed successfully (03:08:42 (hh:mm:ss)) ####
+```
 ## Links and references
 A quick tuturial including an actual customization.
 

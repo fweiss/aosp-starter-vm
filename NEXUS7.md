@@ -13,6 +13,8 @@
 - Thu Jan 8 04:50:16 YTC 2015
 - build number LMY47V
 - Device "grouper" - Firmware "nakasi" - 2012 N7 WiFi-only
+- arch variant: arm7-a-neon
+- cpu variant: cortex-a9
 
 Build number
 LMY47V

@@ -6,10 +6,10 @@ apt_update
 
 # ubuntu 18.04 already has python 3.6.7
 # repo: warning: Python 2 is no longer supported; Please upgrade to Python 3.6+.
-# apt_package 'python'
-# apt_package 'python3'
-# apt_package 'python3-pip'
-# apt_package 'python3-pexpect'
+apt_package 'python'
+apt_package 'python3'
+apt_package 'python3-pip'
+apt_package 'python3-pexpect'
 
 apt_package 'git-core'
 apt_package 'gnupg'
@@ -31,3 +31,6 @@ apt_package 'libgl1-mesa-dev'
 apt_package 'libxml2-utils'
 apt_package 'xsltproc'
 apt_package 'unzip'
+
+# needed for lunch
+apt_package 'openjdk-7-jdk'
