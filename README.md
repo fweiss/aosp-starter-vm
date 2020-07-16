@@ -1,7 +1,7 @@
 # AOSP Starter VM
 Goal is to build Android Open Source in a VirtualBox VM.
 
-> As a specific case, this project will target a Nexus 7 2012 "grouper" Android tablet.
+> As a specific case, this project will target the Nexus 7 2012 "grouper" Android tablet.
 
 ## VM
 Why use a VM? 
@@ -16,34 +16,38 @@ The nice thing about this is that it's got one root partition which can use all 
 
 > Only python 3.4.3 is available on 14.04
 
-## Fresh start
+## Setting up the VM workspace
+Use vagrant to create the VM and provision it with required packages:
 
-With trusty64, 400 GB, 16384 MB, 4 cpus
-
+On the Host;
 ``vagrant up``
 
 Chef provisioning: 16/21 (some were up to date)
+
+Switch to the guest VM and bootstrap the ``repo`` tool:
 
 ``vagrant ssh``
 
 ``source /vagrant/setup.sh``
 
-``git config --global user.email <email>``
+```
+git config --global user.email <email>
+git config --global user.name <name>
+```
 
-``git config --global user.name <name>``
-
-## Next try for Nexus 7
+## Prepare the build for Nexus 7
 Specificaly, for Nexus 7 2012 Wifi (grouper) 5.1.1
 
 List available branches: https://android.googlesource.com/platform/manifest/+refs
 
 Pick the latest, android-5.1.1_r38
 
-``repo init -u https://android.googlesource.com/platform/manifest -b android-5.1.1_r38``
+```
+repo init -u https://android.googlesource.com/platform/manifest -b android-5.1.1_r38``
+repo sync -c
+```
 
-``repo sync -c``
-
-Vendor device drivers. These come with license agreements from:
+Manually get the vendor device drivers. These come with license agreements from:
 - ASUSTek
 - Broadcom Corporation
 - Elan Microelectronics Corporation
@@ -64,11 +68,21 @@ curl https://dl.google.com/dl/android/aosp/nxp-grouper-lmy47v-18820f9b.tgz | tar
 curl https://dl.google.com/dl/android/aosp/widevine-grouper-lmy47v-e570494f.tgz | tar -xvzf - ; bash ./extract-widevine-grouper.sh
 ```
 
-``. build/envsetup.sh``
+## Build the Android system images
+Setup the toolchain:
 
-``lunch aosp_grouper-userdebug``
+```
+. build/envsetup.sh``
+lunch aosp_grouper-userdebug
+```
 
-``make -j2``
+And ... perfom the build (cue dramatic drum roll):
+
+```
+make -j2
+```
+
+> Probably -j4 would be better, but in my case -j2 ran in a reasonable amount of time.
 
 Success, ca 24,700 MB host memory (includes other running app on the host).
 
@@ -108,10 +122,14 @@ cp out/target/product/grouper/*.img out/target/product/grouper/android-info.txt 
 
 On the host:
 
-``set ANDROID_PRODUCT_OUT=out/target/product/grouper``
-``fastboot flashall``
+```
+set ANDROID_PRODUCT_OUT=out/target/product/grouper
+fastboot flashall
+```
 
-Tried using platform tools 30.0.3. Use 26 instead
+> Optional ``-w`` to erase user data, such as installed apks.
+
+Tried using platform tools 30.0.3. Use [platform-tools 26](https://dl.google.com/android/repository/platform-tools_r26.0.2-windows.zip) instead
 
 ```
 E:\Programs\platform-tools>fastboot flashall
@@ -143,6 +161,12 @@ finished. total time: 54.294s
 ```
 Takes a while to reboot
 
+## Post-flash QA
+Check that the following are functional:
+- wifi
+- gps (need a simple app)
+- camera (needs a launcher, but service is running)
+- no AppStore, by design for embedded use case
 
 ## Failed attempt to access device from guest VM
 The follwoing to get adb to access device.
@@ -184,7 +208,7 @@ Reattach device
 
 https://android.stackexchange.com/questions/144966/how-do-i-get-my-device-detected-by-adb-on-linux
 
-### Notes
+### More USB fiddling
 
 Turn off USB MTP, so no drive appears on the host.
 
@@ -236,7 +260,4 @@ Nexus 7 Drivers download page:
 
 https://developers.google.com/android/drivers
 
-
-
-
-
+[fastboot command line options](https://manpages.debian.org/jessie/android-tools-fastboot/fastboot.1.en.html)
