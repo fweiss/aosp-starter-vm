@@ -1,5 +1,5 @@
 # AOSP Starter VM
-Goal is to build Android Open Source in a VirtualBox VM.
+Goal is to build and flash an Android image using Android Open Source in a VirtualBox VM.
 
 > As a specific case, this project will target the Nexus 7 2012 "grouper" Android tablet.
 
@@ -43,7 +43,7 @@ List available branches: https://android.googlesource.com/platform/manifest/+ref
 Pick the latest, android-5.1.1_r38
 
 ```
-repo init -u https://android.googlesource.com/platform/manifest -b android-5.1.1_r38``
+repo init -u https://android.googlesource.com/platform/manifest -b android-5.1.1_r38
 repo sync -c
 ```
 
@@ -84,7 +84,7 @@ make -j2
 
 > Probably -j4 would be better, but in my case -j2 ran in a reasonable amount of time.
 
-Success, ca 24,700 MB host memory (includes other running app on the host).
+Success, about 24,700 MB host memory (includes other running app on the host).
 
 ```
 Installed file list: out/target/product/grouper/installed-files.txt
@@ -110,7 +110,7 @@ out/target/product/grouper/system.img+out/target/product/grouper/obj/PACKAGING/r
 ```
 
 ## Flashing the device
-Copy the Android image files to the host so that flashing can be done form the host.
+Copy the Android image files to the host so that flashing can be done from the host.
 
 > See section below for failed attempt to flash directly from VM.
 
@@ -169,7 +169,7 @@ Check that the following are functional:
 - no AppStore, by design for embedded use case
 
 ## Failed attempt to access device from guest VM
-The follwoing to get adb to access device.
+The following was tried to get adb to access the device.
 
 ``PATH=~/aosp/out/host/linux-x86/bin:$PATH``
 
